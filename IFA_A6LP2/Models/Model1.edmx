@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IFA_A6LP2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Aluno">
+          <Key>
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="Matricula" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Nome" Type="char" MaxLength="40" Nullable="false" />
+          <Property Name="Projeto" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Recebe bolsa" Type="bit" />
+          <Property Name="Professor" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Professor">
+          <Key>
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="Matricula" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Nome" Type="char" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projeto">
+          <Key>
+            <PropertyRef Name="Código" />
+          </Key>
+          <Property Name="Código" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Nome" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="Tipo" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Aluno_Professor">
+          <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Professor">
+              <PropertyRef Name="Matricula" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="Professor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Aluno_Projeto">
+          <End Role="Projeto" Type="Self.Projeto" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projeto">
+              <PropertyRef Name="Código" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="Projeto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IFA_A6LP2ModelStoreContainer">
+          <EntitySet Name="Aluno" EntityType="Self.Aluno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Professor" EntityType="Self.Professor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projeto" EntityType="Self.Projeto" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Aluno_Professor" Association="Self.FK_Aluno_Professor">
+            <End Role="Professor" EntitySet="Professor" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aluno_Projeto" Association="Self.FK_Aluno_Projeto">
+            <End Role="Projeto" EntitySet="Projeto" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IFA_A6LP2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Aluno">
+          <Key>
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="Matricula" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="40" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Projeto" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Recebe_bolsa" Type="Boolean" />
+          <Property Name="Professor" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Professor1" Relationship="Self.FK_Aluno_Professor" FromRole="Aluno" ToRole="Professor" />
+          <NavigationProperty Name="Projeto1" Relationship="Self.FK_Aluno_Projeto" FromRole="Aluno" ToRole="Projeto" />
+        </EntityType>
+        <EntityType Name="Professor">
+          <Key>
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="Matricula" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="40" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Alunoes" Relationship="Self.FK_Aluno_Professor" FromRole="Professor" ToRole="Aluno" />
+        </EntityType>
+        <EntityType Name="Projeto">
+          <Key>
+            <PropertyRef Name="Código" />
+          </Key>
+          <Property Name="Código" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Alunoes" Relationship="Self.FK_Aluno_Projeto" FromRole="Projeto" ToRole="Aluno" />
+        </EntityType>
+        <Association Name="FK_Aluno_Professor">
+          <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Professor">
+              <PropertyRef Name="Matricula" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="Professor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Aluno_Projeto">
+          <End Role="Projeto" Type="Self.Projeto" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projeto">
+              <PropertyRef Name="Código" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="Projeto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IFA_A6LP2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alunoes" EntityType="Self.Aluno" />
+          <EntitySet Name="Professors" EntityType="Self.Professor" />
+          <EntitySet Name="Projetoes" EntityType="Self.Projeto" />
+          <AssociationSet Name="FK_Aluno_Professor" Association="Self.FK_Aluno_Professor">
+            <End Role="Professor" EntitySet="Professors" />
+            <End Role="Aluno" EntitySet="Alunoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aluno_Projeto" Association="Self.FK_Aluno_Projeto">
+            <End Role="Projeto" EntitySet="Projetoes" />
+            <End Role="Aluno" EntitySet="Alunoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IFA_A6LP2ModelStoreContainer" CdmEntityContainer="IFA_A6LP2Entities">
+          <EntitySetMapping Name="Alunoes">
+            <EntityTypeMapping TypeName="IFA_A6LP2Model.Aluno">
+              <MappingFragment StoreEntitySet="Aluno">
+                <ScalarProperty Name="Matricula" ColumnName="Matricula" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Projeto" ColumnName="Projeto" />
+                <ScalarProperty Name="Recebe_bolsa" ColumnName="Recebe bolsa" />
+                <ScalarProperty Name="Professor" ColumnName="Professor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Professors">
+            <EntityTypeMapping TypeName="IFA_A6LP2Model.Professor">
+              <MappingFragment StoreEntitySet="Professor">
+                <ScalarProperty Name="Matricula" ColumnName="Matricula" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projetoes">
+            <EntityTypeMapping TypeName="IFA_A6LP2Model.Projeto">
+              <MappingFragment StoreEntitySet="Projeto">
+                <ScalarProperty Name="Código" ColumnName="Código" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
